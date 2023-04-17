@@ -258,6 +258,7 @@ in
     lazygit
     rustup
     mkpasswd
+    neofetch
   ];
   environment.shells = with pkgs; [ zsh ];
   users.defaultUserShell = pkgs.zsh;
