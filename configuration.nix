@@ -12,6 +12,12 @@ let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in
 {
+  boot.initrd.systemd.enable = true;
+  boot.kernelParams = ["quiet"];
+  boot.plymouth.enable = true;
+  boot.plymouth.theme = "breeze";
+
+  hardware.opengl.enable = true;
   imports =
     [
       # Include the results of the hardware scan.
@@ -96,8 +102,10 @@ in
     atomix # puzzle game
   ]);
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.mutableUsers = false;
   users.users.tiago = {
     isNormalUser = true;
+    hashedPassword = "$6$P.YM/w.J2xObgWpw$4GjcGERojaUchT11BmOwAIa3G3lW7OeeXJrEExq5keAH.58/rhicA9ZosOTvslMJWWYtSpSMXloGwMsyZhWHr0";
     extraGroups = [ "wheel" ];
     packages = with pkgs; [
       gnomeExtensions.vitals
@@ -106,6 +114,7 @@ in
   };
   users.users.maria = {
     isNormalUser = true;
+    hashedPassword = "$6$lKraicfYF7Ri9IFD$u6HJGUJ8DDIBsMFvUu5UDUkK5evLRvYpWXX9XYV8Anz2XhsiqeGlhYt4R7scom3rxRncYH.YqdHBjGYAJ1Rx50";
     packages = with pkgs; [
       firefox
     ];
@@ -248,6 +257,7 @@ in
     vscode
     lazygit
     rustup
+    mkpasswd
   ];
   environment.shells = with pkgs; [ zsh ];
   users.defaultUserShell = pkgs.zsh;
