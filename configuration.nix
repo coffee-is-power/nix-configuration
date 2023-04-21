@@ -6,14 +6,11 @@
 
 let
   flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
-  hyprland = (import flake-compat {
-    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
-  }).defaultNix;
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in
 {
   boot.initrd.systemd.enable = true;
-  boot.kernelParams = ["quiet"];
+  boot.kernelParams = [ "quiet" ];
   boot.plymouth.enable = true;
   boot.plymouth.theme = "breeze";
 
@@ -22,7 +19,6 @@ in
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      hyprland.nixosModules.default
       (import "${home-manager}/nixos")
     ];
   # Use the systemd-boot EFI boot loader.
@@ -58,8 +54,6 @@ in
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-
-  programs.hyprland.enable = true;
   #  programs.ly.enable = true;
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -110,6 +104,7 @@ in
     packages = with pkgs; [
       gnomeExtensions.vitals
       gnomeExtensions.user-themes
+      rust-analyzer
     ];
   };
   users.users.maria = {
@@ -121,6 +116,9 @@ in
   };
   programs.dconf.enable = true;
   home-manager.users.tiago = { lib, ... }: {
+    programs.neovim = {
+      enable = true;
+    };
     dconf.settings = {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
@@ -150,6 +148,7 @@ in
         natural-scroll = false;
       };
       "org/gnome/desktop/peripherals/touchpad" = {
+        click-method = "areas";
         speed = 0.0;
         natural-scroll = true;
         tap-to-click = true;
@@ -201,12 +200,13 @@ in
     home.shellAliases = {
       lg = "lazygit";
     };
+
     programs.gh.enable = true;
     programs.gh.enableGitCredentialHelper = true;
     programs.gh.settings.editor = "code --wait";
     programs.zsh = {
       enable = true;
-      initExtra = "source .p10k.zsh";
+      initExtra = "source $HOME/.p10k.zsh;export PATH=$PATH:$HOME/.local/bin;";
       zplug = {
         enable = true;
         plugins = [
@@ -216,6 +216,12 @@ in
       };
     };
     home.stateVersion = "23.05";
+  };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
   fonts.fonts = with pkgs; [
     meslo-lgs-nf
@@ -245,8 +251,12 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    ninja
+    gcc
+    gnumake    
+    python3
+    cmake
     vim
-    hyprland
     wget
     git
     nixpkgs-fmt
