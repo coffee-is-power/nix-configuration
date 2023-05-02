@@ -5,8 +5,7 @@
 { config, pkgs, ... }:
 
 let
-  flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/refs/heads/release-22.11.zip";
 in
 {
   boot.initrd.systemd.enable = true;
@@ -104,6 +103,7 @@ in
     packages = with pkgs; [
       gnomeExtensions.vitals
       gnomeExtensions.user-themes
+      gnomeExtensions.bluetooth-battery
       rust-analyzer
     ];
   };
@@ -130,6 +130,7 @@ in
         enabled-extensions = [
           "user-theme@gnome-shell-extensions.gcampax.github.com"
           "Vitals@CoreCoding.com"
+          "bluetooth-battery@michalw.github.com"
         ];
 
       };
@@ -215,7 +216,7 @@ in
         ];
       };
     };
-    home.stateVersion = "23.05";
+    home.stateVersion = "22.11";
   };
 
   programs.steam = {
