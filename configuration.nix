@@ -225,7 +225,7 @@ in
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
   fonts.fonts = with pkgs; [
-    meslo-lgs-nf
+    (nerdfonts.override { fonts = ["JetBrainsMono"]; })
     carlito
     dejavu_fonts
     ipafont
@@ -235,7 +235,7 @@ in
   ];
   fonts.fontconfig.defaultFonts = {
     monospace = [
-      "DejaVu Sans Mono"
+      "JetBrainsMono Nerd Font"
       "IPAGothic"
     ];
     sansSerif = [
