@@ -6,6 +6,14 @@
 
 let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/refs/heads/release-22.11.zip";
+
+  unstable = import
+    (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
+    # reuse the current configuration
+    { config = config.nixpkgs.config; };
+  appimagePackage = ((import "/etc/nixos/appimage.nix") {
+    pkgs = pkgs;
+  }).appimagePackage;
 in
 {
   boot.initrd.systemd.enable = true;
@@ -104,7 +112,10 @@ in
       gnomeExtensions.vitals
       gnomeExtensions.user-themes
       gnomeExtensions.bluetooth-battery
+      gnomeExtensions.spotify-controller
+      vlc
       rust-analyzer
+      wl-clipboard
     ];
   };
   users.users.maria = {
@@ -131,6 +142,7 @@ in
           "user-theme@gnome-shell-extensions.gcampax.github.com"
           "Vitals@CoreCoding.com"
           "bluetooth-battery@michalw.github.com"
+          "spotify-controller@koolskateguy89"
         ];
 
       };
@@ -204,10 +216,20 @@ in
 
     programs.gh.enable = true;
     programs.gh.enableGitCredentialHelper = true;
-    programs.gh.settings.editor = "code --wait";
+    programs.gh.settings.editor = "lvim";
     programs.zsh = {
       enable = true;
-      initExtra = "source $HOME/.p10k.zsh;export PATH=$PATH:$HOME/.local/bin;";
+      initExtra = ''
+        source $HOME/.p10k.zsh
+        export PATH=$PATH:$HOME/.local/bin
+        function lvimgui() {
+          export LUNARVIM_CONFIG_DIR="$HOME/.config/lvim"
+          export LUNARVIM_RUNTIME_DIR="$HOME/.local/share/lunarvim"
+          export LUNARVIM_CACHE_DIR="$HOME/.cache/lvim"
+          neovide --nofork -- -u "$LUNARVIM_RUNTIME_DIR/lvim/init.lua" "$@"
+        }
+        eval "$(direnv hook zsh)"
+      '';
       zplug = {
         enable = true;
         plugins = [
@@ -252,6 +274,8 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    neovide
+    direnv
     ninja
     gcc
     gnumake    
@@ -265,11 +289,17 @@ in
     firefox
     alacritty
     spotify
-    vscode
+    unstable.vscode
     lazygit
     rustup
     mkpasswd
     neofetch
+    (appimagePackage {
+      binName = "lunarclient";
+      version = "2.15.1";
+      url = "https://launcherupdates.lunarclientcdn.com/Lunar%20Client-2.15.1.AppImage";
+      sha256 = "f05ea29cb72d34b0ab4ef3bf7f82161dc9699bfeafa96e3834a6dcb74129a78b";
+    })
   ];
   environment.shells = with pkgs; [ zsh ];
   users.defaultUserShell = pkgs.zsh;
@@ -312,5 +342,6 @@ in
       ibus.engines = with pkgs.ibus-engines; [ mozc ];
     };
   };
+  
 }
 
