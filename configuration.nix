@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/refs/heads/release-22.11.zip";
@@ -116,6 +116,51 @@ in
       vlc
       rust-analyzer
       wl-clipboard
+      (pkgs.buildEnv {
+        name = "lvim";
+        paths = [
+          (writeShellScriptBin "lvimgui" ''
+            export LUNARVIM_CONFIG_DIR="$HOME/.config/lvim"
+            export LUNARVIM_RUNTIME_DIR="$HOME/.local/share/lunarvim"
+            export LUNARVIM_CACHE_DIR="$HOME/.cache/lvim"
+            export NEOVIDE_APP_ID="lunarvim-gui";
+            export NEOVIDE_WM_CLASS="lunarvim-gui";
+            export NEOVIDE_WM_CLASS_INSTANCE="lunarvim-gui"
+            neovide -- -u "$LUNARVIM_RUNTIME_DIR/lvim/init.lua" "$@"
+          '')
+          (makeDesktopItem {
+            name = "lvimgui-desktop-icon";
+            desktopName = "LunarVim (GUI)";
+            comment = "An IDE layer for Neovim with sane defaults. Completely free and community driven.";
+            genericName = "Text Editor";
+            categories = [ "Utility" "TextEditor" "Development" "IDE" ];
+            exec = "lvimgui %F";
+            startupWMClass = "lunarvim-gui";
+            mimeTypes = [ "text/plain" ];
+            keywords = ["neovim" "neovide" "lunarvim" "gui" "lvimgui"];
+            icon = builtins.fetchurl {
+              url = "https://www.lunarvim.org/img/lunarvim_icon.png";
+              sha256 = "c9915b6722d37bbfcdd6b8d7fdb089ac874bdd25e4aeaaa71c9483f2cc7ac43f";
+            };
+          })
+          (makeDesktopItem {
+            name = "lvim-desktop-icon";
+            desktopName = "LunarVim (Terminal)";
+            comment = "An IDE layer for Neovim with sane defaults. Completely free and community driven.";
+            genericName = "Text Editor";
+            categories = [ "Utility" "TextEditor" "Development" "IDE" ];
+            exec = "lvim %F";
+            terminal = true;
+            startupWMClass = "lunarvim";
+            mimeTypes = [ "text/plain" ];
+            keywords = ["neovim" "lvim" "lunarvim" "terminal"];
+            icon = builtins.fetchurl {
+              url = "https://www.lunarvim.org/img/lunarvim_icon.png";
+              sha256 = "c9915b6722d37bbfcdd6b8d7fdb089ac874bdd25e4aeaaa71c9483f2cc7ac43f";
+            };
+          })
+        ];
+      })
     ];
   };
   users.users.maria = {
@@ -221,13 +266,7 @@ in
       enable = true;
       initExtra = ''
         source $HOME/.p10k.zsh
-        export PATH=$PATH:$HOME/.local/bin
-        function lvimgui() {
-          export LUNARVIM_CONFIG_DIR="$HOME/.config/lvim"
-          export LUNARVIM_RUNTIME_DIR="$HOME/.local/share/lunarvim"
-          export LUNARVIM_CACHE_DIR="$HOME/.cache/lvim"
-          neovide --nofork -- -u "$LUNARVIM_RUNTIME_DIR/lvim/init.lua" "$@"
-        }
+        export PATH=$PATH:$HOME/.local/bin:~/.npm-global/
         eval "$(direnv hook zsh)"
       '';
       zplug = {
@@ -274,6 +313,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    lua53Packages.lua-lsp
     neovide
     direnv
     ninja
