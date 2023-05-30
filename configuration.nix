@@ -116,6 +116,7 @@ in
       vlc
       rust-analyzer
       wl-clipboard
+      insomnia
       (pkgs.buildEnv {
         name = "lvim";
         paths = [
