@@ -1,4 +1,4 @@
-{pkgs, ...}: with pkgs; {
+with (import <nixpkgs> { }); {
   appimagePackage = { binName, version, url, sha256 ? fakeSha256
     , meta ? { platforms = [ "x86_64-linux" ]; } }:
     let
