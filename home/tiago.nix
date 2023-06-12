@@ -1,7 +1,8 @@
 { pkgs, lib, ... }: {
   home.packages = with pkgs; [
-    (import ../packages/lvimgui.nix)
     (import ../packages/lunar-client.nix)
+    (import ../packages/lvim.nix)
+    (import ../packages/lvimgui.nix)
     gnomeExtensions.vitals
     gnomeExtensions.user-themes
     gnomeExtensions.bluetooth-battery
