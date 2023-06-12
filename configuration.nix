@@ -95,6 +95,9 @@ in {
     hashedPassword =
       "$6$P.YM/w.J2xObgWpw$4GjcGERojaUchT11BmOwAIa3G3lW7OeeXJrEExq5keAH.58/rhicA9ZosOTvslMJWWYtSpSMXloGwMsyZhWHr0";
     extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDXCnEqbhGJJBPMkAZscDJV6+NdY7jEQ2AlmhcLgIMjDcIriPU2uUi73INnixW229I79RuHduozqIyI5mUl503DOcfJEWzSdHqqtIv4IN6YPSVRlWHQnLWg0x0THObxJ6LCKUpybI7SVWyd8MXU4zpABBMq3NVu3+RFJiqV8d0/egx+8xdlRbLPvXzjxXztIYFWdW4pC/pXwU7wpQh/W58geOixYwvhuueDPn7JuItcl5EEljqrmler3pcWAr3ibY3nAYjPfMwszKtcUZLy+3/RmZFnifNubXEq2D2Z0ItK2dvkRCxpIRyoDwQOGupPIVTSIXViRMB7uusvLtnJsDsisNXVBJWEeY9ssuJhy9RIcLC3vnLFp4mfuoGJUpPoCx4SbgK3VhygoV18QMGoOjxdvQFdhtkJjDX4Y+apW9t61xn9YBkfEZCDKrw190eqKNa7R+4GMKYEJWsBdM0nQzN9NgKWmRifHeNxcbzXWJuhxdmiDxdp/bUxErDz9EzcO2c= u0_a163@localhost"
+    ];
   };
   users.users.maria = {
     isNormalUser = true;
@@ -145,7 +148,13 @@ in {
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+
+    };
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
