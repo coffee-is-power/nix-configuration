@@ -159,6 +159,7 @@ lvim.plugins = {
     end
   },
   {'direnv/direnv.vim'},
+  {'github/copilot.vim'},
   {
     'folke/trouble.nvim',
     config = function() 
