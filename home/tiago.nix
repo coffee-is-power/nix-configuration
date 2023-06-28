@@ -27,7 +27,6 @@
     gimp
   ];
   programs.neovim = { enable = true; };
-  dconf.settings = import ./tiago/dconf.nix { lib = lib; };
   gtk = {
     enable = true;
 
