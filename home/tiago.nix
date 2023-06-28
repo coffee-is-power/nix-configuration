@@ -3,17 +3,21 @@
     (import ../packages/lunar-client.nix)
     (import ../packages/lvim.nix)
     (import ../packages/lvimgui.nix)
+    spotify
+    remmina
+    remmina
+    gnomeExtensions.remmina-search-provider
     gnomeExtensions.vitals
     gnomeExtensions.user-themes
     gnomeExtensions.bluetooth-battery
     gnomeExtensions.spotify-controller
+    gnomeExtensions.blur-my-shell
     vlc
     insomnia
     direnv
     wget
     nixpkgs-fmt
     alacritty
-    spotify
     vscode
     lazygit
     nodePackages.neovim
@@ -27,6 +31,7 @@
     gnumake
     python3
     cmake
+    gimp
   ];
   programs.neovim = { enable = true; };
   dconf.settings = import ./tiago/dconf.nix { lib = lib; };
@@ -34,13 +39,13 @@
     enable = true;
 
     iconTheme = {
-      name = "ePapirus-Dark";
-      package = pkgs.papirus-icon-theme;
+      name = "Tokyonight-Dark-Cyan";
+      package = import ../packages/tokyonight-theme.nix;
     };
 
     theme = {
-      name = "adw-gtk3-dark";
-      package = pkgs.adw-gtk3;
+      name = "Tokyonight-Dark-BL";
+      package = import ../packages/tokyonight-theme.nix;
     };
 
     cursorTheme = {
@@ -62,6 +67,7 @@
       '';
     };
   };
+  home.sessionVariables.GTK_THEME = "Tokyonight-Dark-BL";
   programs.git = {
     enable = true;
     userName = "coffee-is-power";

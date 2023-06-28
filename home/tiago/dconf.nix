@@ -5,16 +5,18 @@
 
     # `gnome-extensions list` for a list
     enabled-extensions = [
+      "remmina-search-provider@alexmurray.github.com"
       "user-theme@gnome-shell-extensions.gcampax.github.com"
       "Vitals@CoreCoding.com"
       "bluetooth-battery@michalw.github.com"
       "spotify-controller@koolskateguy89"
+      "blur-my-shell@aunetx"
     ];
 
   };
 
   "org/gnome/shell/extensions/user-theme" = {
-    # name = "some theme"
+    name = "Tokyonight-Dark-BL";
   };
   "org/gnome/desktop/input-sources" = {
     sources = [
@@ -31,8 +33,11 @@
     speed = 0.0;
     natural-scroll = true;
     tap-to-click = true;
-    edge-scrolling-enabled = true;
-    two-finger-scrolling-enabled = false;
+    edge-scrolling-enabled = false;
+    two-finger-scrolling-enabled = true;
     send-events = "enabled";
+  };
+  "org/gnome/shell/extensions/blur-my-shell" = {
+  
   };
 }
