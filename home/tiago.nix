@@ -5,13 +5,6 @@
     (import ../packages/lvimgui.nix)
     spotify
     remmina
-    remmina
-    gnomeExtensions.remmina-search-provider
-    gnomeExtensions.vitals
-    gnomeExtensions.user-themes
-    gnomeExtensions.bluetooth-battery
-    gnomeExtensions.spotify-controller
-    gnomeExtensions.blur-my-shell
     vlc
     insomnia
     direnv
@@ -85,7 +78,6 @@
     enable = true;
     initExtra = ''
       source $HOME/.p10k.zsh
-      export PATH=$PATH:$HOME/.local/bin:~/.npm-global/
       eval "$(direnv hook zsh)"
     '';
     zplug = {
