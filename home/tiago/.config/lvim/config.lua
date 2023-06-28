@@ -152,6 +152,12 @@ lvim.plugins = {
       })
     end
   },
+  {
+    "klen/nvim-test",
+    config = function()
+      require('nvim-test').setup()
+    end
+  },
   {'direnv/direnv.vim'},
   {
     'folke/trouble.nvim',
