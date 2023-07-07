@@ -76,7 +76,7 @@
   home.file.".p10k.zsh".source = tiago/.p10k.zsh;
   home.file.".p10k.zsh".executable = true;
   home.file.".config/lvim".source = tiago/.config/lvim;
-  home.shellAliases = { lg = "lazygit"; };
+  home.shellAliases = { lg = "lazygit"; nixrb = "sudo nixos-rebuild switch"; nixroll = "sudo nixos-rebuild switch --rollback"; };
 
   programs.gh.enable = true;
   programs.gh.enableGitCredentialHelper = true;
