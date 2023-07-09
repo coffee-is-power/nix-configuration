@@ -21,7 +21,7 @@ derivation {
 
       export src="$out/lunarvim/lvim/utils/bin/lvim.template"
       export dst="$out/bin/$NVIM_APPNAME"
-       echo 'export PATH="$PATH:${lazygit}/bin"' > "$dst"
+      echo 'export PATH="$PATH:${lazygit}/bin"' > "$dst"
       echo 'export PATH="$PATH:${neovim}/bin"' >> "$dst"
       echo 'export PATH="$PATH:${fd}/bin"' >> "$dst"
       echo 'export PATH="$PATH:${ripgrep}/bin"' >> "$dst"
@@ -37,6 +37,7 @@ derivation {
         -e s"#RUNTIME_DIR_VAR#\"$LUNARVIM_RUNTIME_DIR\"#"g \
         -e s"#CONFIG_DIR_VAR#\"$LUNARVIM_CONFIG_DIR\"#"g \
         -e s"#CACHE_DIR_VAR#\"$LUNARVIM_CACHE_DIR\"#"g \
+        -e s"#nvim -u#\"${pkgs.neovim}/bin/nvim\" -u#"g \
         -e s"#BASE_DIR_VAR#\"$LUNARVIM_BASE_DIR\"#"g "$src" >> "$dst"
       chmod +x "$dst"
     ''
@@ -48,20 +49,4 @@ derivation {
     rev = "8626cb78d2857d4781b35d6db5289a52046c2eef";
     sha256 = "sha256-xL3+AlLvAs0luxMdc4SXKljd0wLH2njMH8pKd0RSgkY=";
   };
-  buildInputs = [
-    neovim
-    nodePackages.neovim
-    fd
-    ripgrep
-    python311Packages.pynvim
-    git
-    wl-clipboard
-    ninja
-    gcc
-    gnumake
-    python3
-    cmake
-    lazygit
-  ];
-
 }
