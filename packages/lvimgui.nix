@@ -5,6 +5,18 @@ buildEnv {
   paths = [
     neovide
     (writeShellScriptBin "lvimgui" ''
+      export PATH="$PATH:${lazygit}/bin"
+      export PATH="$PATH:${neovim}/bin"
+      export PATH="$PATH:${fd}/bin"
+      export PATH="$PATH:${ripgrep}/bin"
+      export PATH="$PATH:${python311Packages.pynvim}/bin"
+      export PATH="$PATH:${git}/bin"
+      export PATH="$PATH:${wl-clipboard}/bin"
+      export PATH="$PATH:${ninja}/bin"
+      export PATH="$PATH:${gcc}/bin"
+      export PATH="$PATH:${gnumake}/bin"
+      export PATH="$PATH:${python3}/bin"
+      export PATH="$PATH:${cmake}/bin"
       export LUNARVIM_CONFIG_DIR="$HOME/.config/lvim"
       export LUNARVIM_CACHE_DIR="$HOME/.cache/lvim"
       export LUNARVIM_RUNTIME_DIR="$HOME/.local/share/lunarvim"
@@ -12,7 +24,7 @@ buildEnv {
       export NEOVIDE_APP_ID="lunarvim-gui";
       export NEOVIDE_WM_CLASS="lunarvim-gui";
       export NEOVIDE_WM_CLASS_INSTANCE="lunarvim-gui"
-      neovide -- -u "$LUNARVIM_BASE_DIR/init.lua" "$@"
+      ${neovide}/bin/neovide -- -u "$LUNARVIM_BASE_DIR/init.lua" "$@"
     '')
     (makeDesktopItem {
       name = "lvimgui-desktop-icon";
