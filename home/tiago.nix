@@ -5,7 +5,6 @@
     (import ../packages/lvimgui.nix)
     spotify
     remmina
-    remmina
     gnomeExtensions.remmina-search-provider
     gnomeExtensions.vitals
     gnomeExtensions.user-themes
@@ -19,18 +18,6 @@
     nixpkgs-fmt
     alacritty
     vscode
-    lazygit
-    nodePackages.neovim
-    fd
-    ripgrep
-    python311Packages.pynvim
-    git
-    wl-clipboard
-    ninja
-    gcc
-    gnumake
-    python3
-    cmake
     gimp
   ];
   programs.neovim = { enable = true; };
@@ -76,7 +63,7 @@
   home.file.".p10k.zsh".source = tiago/.p10k.zsh;
   home.file.".p10k.zsh".executable = true;
   home.file.".config/lvim".source = tiago/.config/lvim;
-  home.shellAliases = { lg = "lazygit"; nixrb = "sudo nixos-rebuild switch"; nixroll = "sudo nixos-rebuild switch --rollback"; };
+  home.shellAliases = { lg = "${pkgs.lazygit}/bin/lazygit"; nixrb = "sudo nixos-rebuild switch"; nixroll = "sudo nixos-rebuild switch --rollback"; };
 
   programs.gh.enable = true;
   programs.gh.enableGitCredentialHelper = true;
