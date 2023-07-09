@@ -14,6 +14,10 @@ in {
   boot.plymouth.theme = "breeze";
 
   hardware.opengl.enable = true;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
